@@ -1,11 +1,11 @@
 'use client';
 import { Environment, OrbitControls } from '@react-three/drei';
 import { Canvas, ThreeElements, useFrame } from '@react-three/fiber';
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 
 const DShape = (props: ThreeElements['mesh']) => {
-  const meshRef = useRef<THREE.Mesh>(null!);
+  const meshRef = useRef<THREE.Mesh>(null);
   const swaySpeedRef = useRef(0.01);
   const swayAmplitudeRef = useRef(1.0);
   const elapsedTimeRef = useRef(0);
@@ -43,14 +43,11 @@ const DShape = (props: ThreeElements['mesh']) => {
     return geom;
   }, []);
 
-  useEffect(() => {
-    if (meshRef.current) meshRef.current.geometry = geometry;
-  }, [geometry]);
-
   return (
     <mesh
       {...props}
-      ref={meshRef as never}
+      ref={meshRef}
+      geometry={geometry}
       scale={[1, 1, 1]}
       rotation={[
         THREE.MathUtils.degToRad(18),

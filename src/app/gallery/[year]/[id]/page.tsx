@@ -2,22 +2,17 @@
 
 import { clsx } from 'clsx';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
-import { GALLERY, GalleryItem } from '@/constants/gallery';
+import { GALLERY } from '@/constants/gallery';
 
 import * as styles from './page.css';
 
-type PageParams = {
-  params: { year: string; id: string };
-};
-
-export default function Page({ params }: PageParams) {
-  const { year, id } = params;
-
+export default function Page() {
+  const { year, id } = useParams<{ year: string; id: string }>();
   const router = useRouter();
 
-  const image: GalleryItem = GALLERY[year][id] || undefined;
+  const image = GALLERY[Number(year)]?.[id];
 
   if (!image) return null;
 

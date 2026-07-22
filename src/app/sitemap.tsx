@@ -13,7 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: `${METADATA.url}`,
-      changeFrequency: 'yearly',
+      changeFrequency: 'monthly',
       priority: 1.0,
     },
     ...entries,

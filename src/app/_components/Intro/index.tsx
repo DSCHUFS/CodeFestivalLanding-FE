@@ -10,13 +10,13 @@ const Intro = () => {
     <section>
       <h2 className={styles.title}>INTRO</h2>
       <p className={styles.description}>
-        HUFS's largest algorithm competition, Code Festival, will be held on November 28.
+        HUFS’s largest algorithm competition, Code Festival, will be held on November 28.
         <br />
         Participants can join either the Beginner Track or the Challenger Track. Both tracks solve
         the same problem set. The Beginner Track focuses on learning and participation, while the
         Challenger Track offers awards and prizes for top performers.
         <br />
-        It's a great opportunity to challenge yourself and improve your skills.
+        It’s a great opportunity to challenge yourself and improve your skills.
         <br />
       </p>
       <Link className={styles.directLink} href={FESTIVAL.current.href}>

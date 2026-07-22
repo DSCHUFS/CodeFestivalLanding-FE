@@ -9,12 +9,8 @@ import BackButton from './_components/BackButton';
 import TableOfContents, { TOCType } from './_components/TableOfContents';
 import * as styles from './page.css';
 
-type PageProps = {
-  params: { id: string };
-};
-
-export default async function Page({ params }: PageProps) {
-  const { id } = params;
+export default async function Page({ params }: PageProps<'/festival/[id]'>) {
+  const { id } = await params;
 
   const filePath = path.join(process.cwd(), 'content/histories', `${id}.mdx`);
   const markdownWithMeta = fs.readFileSync(filePath, 'utf-8');

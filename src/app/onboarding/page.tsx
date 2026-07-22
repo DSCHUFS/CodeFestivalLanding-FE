@@ -16,7 +16,7 @@ const Content = () => {
   return (
     <div className={styles.root}>
       <div className={styles.background}>
-        <Image src="/static/images/bg.webp" alt="background" quality={100} fill priority />
+        <Image src="/static/images/bg.webp" alt="background" quality={100} fill preload />
       </div>
 
       <div className={styles.content}>

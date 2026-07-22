@@ -4,7 +4,6 @@ import { clsx } from 'clsx';
 import { Metadata, Viewport } from 'next';
 import { JetBrains_Mono } from 'next/font/google';
 import localFont from 'next/font/local';
-import { ReactNode } from 'react';
 
 import Providers from '@/app/providers';
 import { METADATA } from '@/constants/metadata';
@@ -86,12 +85,7 @@ const pretendard = localFont({
   variable: '--font-pretendard',
 });
 
-type RootLayoutProps = {
-  children: ReactNode;
-  modal: ReactNode;
-};
-
-export default function RootLayout({ children, modal }: RootLayoutProps) {
+export default function RootLayout({ children, modal }: LayoutProps<'/'>) {
   return (
     <html lang="ko">
       <body className={clsx(pretendard.variable, jetbrains.variable)}>

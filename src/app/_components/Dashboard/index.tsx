@@ -22,7 +22,7 @@ const Dashboard = () => {
   return (
     <Fragment>
       <div className={styles.background}>
-        <Image src="/static/images/bg.webp" alt="background" quality={100} fill priority />
+        <Image src="/static/images/bg.webp" alt="background" quality={100} fill preload />
         <div className={styles.backgroundGradient} />
         <ScrollDownIndicator />
       </div>

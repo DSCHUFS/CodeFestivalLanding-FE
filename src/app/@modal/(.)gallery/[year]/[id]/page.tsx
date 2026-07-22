@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 import {
   Dialog,
@@ -11,23 +11,19 @@ import {
   DialogOverlay,
   DialogTitle,
 } from '@/components/system/Dialog';
-import { GALLERY, GalleryItem } from '@/constants/gallery';
+import { GALLERY } from '@/constants/gallery';
 
 import * as styles from './page.css';
 
-type GalleryModalParams = {
-  params: { id: string; year: string };
-};
-
-export default function GalleryModal({ params }: GalleryModalParams) {
-  const { id, year } = params;
+export default function GalleryModal() {
+  const { id, year } = useParams<{ id: string; year: string }>();
   const router = useRouter();
 
   const onOpenChange = (open: boolean) => {
     if (!open) router.back();
   };
 
-  const image: GalleryItem = GALLERY[year][id] || undefined;
+  const image = GALLERY[Number(year)]?.[id];
 
   if (!image) return null;
 

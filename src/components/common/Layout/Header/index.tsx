@@ -16,7 +16,7 @@ const Header = () => {
       <header className={styles.root}>
         <div className={styles.inner}>
           <Link className={styles.ci} href="/">
-            <Image src="/static/images/ci.svg" alt="logo" draggable={false} fill priority />
+            <Image src="/static/images/ci.svg" alt="logo" draggable={false} fill loading="eager" />
           </Link>
           <nav className={styles.navigation}>
             {MENU.map(menu => (
