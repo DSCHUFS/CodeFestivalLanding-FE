@@ -4,12 +4,17 @@ import Link from 'next/link';
 import { Fragment, useState } from 'react';
 
 import { MENU } from '@/constants/menu';
+import { useCurrentEvent } from '@/contexts/CurrentEventContext';
 
 import MobileMenu from './MobileMenu';
 import * as styles from './styles.css';
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const { event, loading } = useCurrentEvent();
+  const menu = event
+    ? [{ title: event.title, href: `/festival/${encodeURIComponent(event.edition)}` }, ...MENU]
+    : MENU;
 
   return (
     <Fragment>
@@ -19,9 +24,10 @@ const Header = () => {
             <Image src="/static/images/ci.svg" alt="logo" draggable={false} fill loading="eager" />
           </Link>
           <nav className={styles.navigation}>
-            {MENU.map(menu => (
-              <Link className={styles.menu} href={menu.href} key={menu.href}>
-                {menu.title}
+            {loading && <span className={styles.menuSkeleton} aria-hidden />}
+            {menu.map(menuItem => (
+              <Link className={styles.menu} href={menuItem.href} key={menuItem.href}>
+                {menuItem.title}
               </Link>
             ))}
           </nav>
@@ -37,7 +43,7 @@ const Header = () => {
         </div>
       </header>
 
-      <MobileMenu open={menuOpen} setOpen={setMenuOpen} />
+      <MobileMenu menu={menu} loading={loading} open={menuOpen} setOpen={setMenuOpen} />
     </Fragment>
   );
 };

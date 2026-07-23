@@ -1,23 +1,27 @@
+'use client';
+
 import { clsx } from 'clsx';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Fragment } from 'react';
 
 import CIShape from '@/components/common/CIShape';
 import ScrollDownIndicator from '@/components/common/ScrollDownIndicator';
-import { FESTIVAL } from '@/constants/menu';
+import { useCurrentEvent } from '@/contexts/CurrentEventContext';
 
 import * as styles from './styles.css';
 
 const Dashboard = () => {
-  const currentTime = new Date();
-  const registrationDeadline = new Date(FESTIVAL.current.registrationDeadline);
-  const registrationClosed = currentTime > registrationDeadline;
-  const registrationLink = FESTIVAL.current.registrationLink;
-  const competitionDate = new Date(FESTIVAL.current.date).toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
+  const { event, error, loading } = useCurrentEvent();
+  const registrationNotOpen = event && new Date() < new Date(`${event.registrationOpensAt}+09:00`);
+  const eventEnded = event && new Date() > new Date(`${event.eventDate}T23:59:59.999+09:00`);
+  const competitionDate = event
+    ? new Date(`${event.eventDate}T00:00:00+09:00`).toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      })
+    : 'To Be Announced';
 
   return (
     <Fragment>
@@ -28,19 +32,33 @@ const Dashboard = () => {
       </div>
       <section className={styles.root}>
         <h1 className={styles.branding}>HUFS CodeFestival</h1>
-        <p className={styles.time}>{competitionDate}</p>
-        {!registrationLink ? (
+        {loading ? (
+          <span className={styles.timeSkeleton} aria-hidden />
+        ) : (
+          <p className={styles.time}>{competitionDate}</p>
+        )}
+        {loading ? (
+          <span className={styles.registerSkeleton} aria-hidden />
+        ) : !event && error ? (
+          <span className={clsx(styles.registerLink, styles.registerClosed)}>
+            Registration Unavailable
+          </span>
+        ) : !event || registrationNotOpen ? (
           <span className={clsx(styles.registerLink, styles.registerClosed)}>
             Registration Not Yet Open
           </span>
-        ) : registrationClosed ? (
+        ) : eventEnded ? (
           <span className={clsx(styles.registerLink, styles.registerClosed)}>
             Registration Closed
           </span>
+        ) : !event.registrationOpen ? (
+          <Link className={styles.registerLink} href="/apply">
+            View Application
+          </Link>
         ) : (
-          <a className={styles.registerLink} href={registrationLink} target="_blank">
+          <Link className={styles.registerLink} href="/apply">
             Registration
-          </a>
+          </Link>
         )}
         <p className={styles.souvenir}>소정의 기념품이 제공됩니다</p>
         <div className={styles.ci}>

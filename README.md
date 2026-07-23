@@ -41,7 +41,7 @@ loading across the platform.
       </td>
   </tr>
   <tr>
-    <td align="center"><b>CI/CD</b></td>
+    <td align="center"><b>CI</b></td>
     <td>
       <img src="https://img.shields.io/badge/GitHub%20Actions-2088FF?logo=GitHub%20Actions&logoColor=white" alt="GitHub Actions" >
     </td>
@@ -49,9 +49,7 @@ loading across the platform.
   <tr>
     <td align="center"><b>deployment</b></td>
     <td>
-      <img src="https://img.shields.io/badge/Vercel-black?style=flat&logo=Vercel&logoColor=white" alt="Vercel" /> <i>(used until 2024)</i>
-      <br/>
-      <img src="https://img.shields.io/badge/Docker-2496ED?style=flat&logo=Docker&logoColor=white" alt="Docker" /> current self-hosted
+      <img src="https://img.shields.io/badge/Vercel-black?style=flat&logo=Vercel&logoColor=white" alt="Vercel" />
     </td>
   </tr>
 </table>
@@ -82,34 +80,17 @@ if you are not installed pnpm, install it first: `npm install -g pnpm`
 
 ### Competition Setup
 
-1. Create a new markdown file in the `content/histories` folder, with the filename representing the competition round.
-2. Write the competition details in the newly created markdown file.
-3. Update the competition date displayed on the landing page in `src/constants/menu.ts`. Additionally, include the
-   registration link and competition page details in the header.
+Competition metadata and registration periods are managed by the CodeFestival API instead of a hard-coded frontend
+constant.
 
-If you are setting up the 7th Code Festival, you can configure it as follows:
+1. Create an MDX file in `content/histories`. Use the competition edition as the filename, such as `7.mdx`.
+2. Add the competition details to the MDX file and verify that `/festival/{edition}` renders correctly.
+3. Open `/admin`, authenticate with an administrator account, and create a competition using the same edition.
+4. Configure its title, privacy policy, registration period, event date, and active status.
 
-```typescript
-export const FESTIVAL = {
-  current: {
-    title: '7th Code Festival',
-    href: '/festival/7',
-    date: '2025-10-31T18:00:00+09:00',
-    registrationDeadline: '2025-10-20T23:59:59+09:00',
-    registrationLink: 'https://forms.gle/[7th-registration-link]',
-  },
-  6: {
-    title: '6th Code Festival',
-    href: '/festival/6',
-    date: '2024-10-31T18:00:00+09:00',
-    registrationDeadline: '2024-10-23T23:59:59+09:00',
-    registrationLink: 'https://forms.gle/dGGqMTxni4RL2Moq7',
-  },
-};
-```
-
-To set up the latest competition, simply modify the `current` section in the `FESTIVAL` object. The previous
-competition, represented by `6`, will be archived automatically.
+The active competition is automatically reflected in the landing page, header, and application page. Activating a new
+competition deactivates the previously active competition, while its MDX page remains available as part of the
+competition history.
 
 ### FAQ Page Content
 

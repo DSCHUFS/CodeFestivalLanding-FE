@@ -1,13 +1,14 @@
 import { style } from '@vanilla-extract/css';
 
 import { breakpoint } from '@/styles/responsive.css';
+import { skeleton } from '@/styles/skeleton.css';
 import { theme } from '@/styles/theme.css';
 import { rem } from '@/utils/pxto';
 
 export const root = style({
   position: 'fixed',
   left: 0,
-  width: '100%',
+  width: 'calc(100% - var(--removed-body-scroll-bar-size, 0px))',
   height: theme.sizes.appHeaderHeight,
   backdropFilter: `blur(${rem(8)})`,
   zIndex: theme.zIndices.header,
@@ -47,6 +48,15 @@ export const menu = style({
   letterSpacing: rem(-0.1),
   lineHeight: '100%',
 });
+
+export const menuSkeleton = style([
+  skeleton,
+  {
+    width: rem(164),
+    height: rem(16),
+    flexShrink: 0,
+  },
+]);
 
 export const menuTrigger = style({
   ...theme.layouts.center,
@@ -95,6 +105,15 @@ export const mobileMenuItem = style({
 
   ':hover': { color: theme.colors.white80 },
 });
+
+export const mobileMenuItemSkeleton = style([
+  skeleton,
+  {
+    width: rem(220),
+    height: rem(32),
+    flexShrink: 0,
+  },
+]);
 
 export const mobileMenuClose = style({
   ...theme.layouts.center,

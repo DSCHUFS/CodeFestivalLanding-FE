@@ -1,6 +1,7 @@
 import { style } from '@vanilla-extract/css';
 
 import { breakpoint } from '@/styles/responsive.css';
+import { skeleton } from '@/styles/skeleton.css';
 import { theme } from '@/styles/theme.css';
 import { rem } from '@/utils/pxto';
 
@@ -45,3 +46,14 @@ export const directLink = style({
 
   ':hover': { opacity: 0.8 },
 });
+
+export const directLinkPlaceholder = style({
+  display: 'block',
+  width: rem(220),
+  height: rem(25),
+  marginTop: rem(20),
+  marginInline: 'auto',
+  marginBottom: rem(60),
+});
+
+export const directLinkSkeleton = style([directLinkPlaceholder, skeleton]);

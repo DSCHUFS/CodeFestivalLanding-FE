@@ -1,8 +1,23 @@
 'use client';
 import { Environment, OrbitControls } from '@react-three/drei';
 import { Canvas, ThreeElements, useFrame } from '@react-three/fiber';
-import { useMemo, useRef } from 'react';
+import { clsx } from 'clsx';
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
+
+import * as styles from './styles.css';
+
+type SceneReadyProps = {
+  onReady: () => void;
+};
+
+const SceneReady = ({ onReady }: SceneReadyProps) => {
+  useEffect(() => {
+    onReady();
+  }, [onReady]);
+
+  return null;
+};
 
 const DShape = (props: ThreeElements['mesh']) => {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -68,14 +83,22 @@ const DShape = (props: ThreeElements['mesh']) => {
 };
 
 const CIShape = () => {
+  const [isReady, setIsReady] = useState(false);
+  const handleReady = useCallback(() => setIsReady(true), []);
+
   return (
-    <Canvas camera={{ position: [0, 0, 80], fov: 75 }}>
-      <ambientLight intensity={0.3} />
-      <directionalLight position={[5, 10, 7.5]} intensity={0.8} />
-      <Environment path="/static/hdri/" files={'venice_sunset_1k.hdr'} />
-      <DShape />
-      <OrbitControls enableRotate={false} enableZoom={false} enablePan={false} />
-    </Canvas>
+    <div className={clsx(styles.canvas, isReady && styles.canvasReady)}>
+      <Canvas camera={{ position: [0, 0, 80], fov: 75 }}>
+        <ambientLight intensity={0.3} />
+        <directionalLight position={[5, 10, 7.5]} intensity={0.8} />
+        <Suspense fallback={null}>
+          <Environment path="/static/hdri/" files="venice_sunset_1k.hdr" />
+          <DShape />
+          <OrbitControls enableRotate={false} enableZoom={false} enablePan={false} />
+          <SceneReady onReady={handleReady} />
+        </Suspense>
+      </Canvas>
+    </div>
   );
 };
 

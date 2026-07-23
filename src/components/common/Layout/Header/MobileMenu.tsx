@@ -9,16 +9,18 @@ import {
   DialogOverlay,
   DialogTitle,
 } from '@/components/system/Dialog';
-import { MENU } from '@/constants/menu';
+import { MenuItem } from '@/constants/menu';
 
 import * as styles from './styles.css';
 
 type MobileMenuProps = {
+  menu: MenuItem[];
+  loading: boolean;
   open: boolean;
   setOpen: (open: boolean) => void;
 };
 
-const MobileMenu = ({ open, setOpen }: MobileMenuProps) => {
+const MobileMenu = ({ menu, loading, open, setOpen }: MobileMenuProps) => {
   return (
     <Dialog open={open}>
       <DialogOverlay />
@@ -29,9 +31,10 @@ const MobileMenu = ({ open, setOpen }: MobileMenuProps) => {
         </DialogHeader>
         <button className={styles.mobileMenuOverlay} onClick={() => setOpen(false)}>
           <nav className={styles.mobileMenuNavigation}>
-            {MENU.map(menu => (
-              <Link className={styles.mobileMenuItem} href={menu.href} key={menu.href}>
-                {menu.title}
+            {loading && <span className={styles.mobileMenuItemSkeleton} aria-hidden />}
+            {menu.map(menuItem => (
+              <Link className={styles.mobileMenuItem} href={menuItem.href} key={menuItem.href}>
+                {menuItem.title}
               </Link>
             ))}
           </nav>

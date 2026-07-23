@@ -1,6 +1,7 @@
 import { globalStyle, style, keyframes } from '@vanilla-extract/css';
 
 import { breakpoint } from '@/styles/responsive.css';
+import { skeleton } from '@/styles/skeleton.css';
 import { theme } from '@/styles/theme.css';
 import { rem } from '@/utils/pxto';
 
@@ -71,6 +72,15 @@ export const time = style({
   }),
 });
 
+export const timeSkeleton = style([
+  skeleton,
+  {
+    width: rem(184),
+    height: rem(20),
+    marginTop: rem(20),
+  },
+]);
+
 export const registerLink = style({
   width: 'fit-content',
   paddingBlock: rem(13),
@@ -122,6 +132,23 @@ export const registerClosed = style({
     backgroundColor: 'transparent',
   },
 });
+
+export const registerSkeleton = style([
+  registerLink,
+  skeleton,
+  {
+    width: rem(154),
+    height: rem(44),
+    padding: 0,
+    borderColor: 'transparent',
+    cursor: 'default',
+
+    ':hover': {
+      borderColor: 'transparent',
+      backgroundColor: theme.colors.white20,
+    },
+  },
+]);
 
 export const souvenir = style({
   marginTop: rem(24),
