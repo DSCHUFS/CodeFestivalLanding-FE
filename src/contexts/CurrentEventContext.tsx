@@ -2,11 +2,11 @@
 
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 
-import { CodeFestivalApiError, getCurrentEvent } from '@/services/api';
-import { CodeFestivalEvent } from '@/types/application';
+import { CodeFestivalApiError, getCurrentEventSummary } from '@/services/api';
+import { CodeFestivalCurrentEvent } from '@/types/application';
 
 type CurrentEventContextValue = {
-  event?: CodeFestivalEvent;
+  event?: CodeFestivalCurrentEvent;
   error: boolean;
   loading: boolean;
   refresh: () => Promise<void>;
@@ -19,13 +19,13 @@ type CurrentEventProviderProps = {
 };
 
 export const CurrentEventProvider = ({ children }: CurrentEventProviderProps) => {
-  const [event, setEvent] = useState<CodeFestivalEvent>();
+  const [event, setEvent] = useState<CodeFestivalCurrentEvent>();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const refresh = useCallback(async () => {
     try {
-      setEvent(await getCurrentEvent());
+      setEvent(await getCurrentEventSummary());
       setError(false);
     } catch (requestError) {
       if (requestError instanceof CodeFestivalApiError && requestError.status === 404) {
@@ -41,11 +41,7 @@ export const CurrentEventProvider = ({ children }: CurrentEventProviderProps) =>
 
   useEffect(() => {
     const initialRequest = window.setTimeout(() => void refresh(), 0);
-    const interval = window.setInterval(() => void refresh(), 60_000);
-    return () => {
-      window.clearTimeout(initialRequest);
-      window.clearInterval(interval);
-    };
+    return () => window.clearTimeout(initialRequest);
   }, [refresh]);
 
   return (

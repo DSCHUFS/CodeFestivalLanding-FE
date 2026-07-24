@@ -3,7 +3,7 @@
 import { clsx } from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 
 import CIShape from '@/components/common/CIShape';
 import ScrollDownIndicator from '@/components/common/ScrollDownIndicator';
@@ -13,8 +13,13 @@ import * as styles from './styles.css';
 
 const Dashboard = () => {
   const { event, error, loading } = useCurrentEvent();
-  const registrationNotOpen = event && new Date() < new Date(`${event.registrationOpensAt}+09:00`);
-  const eventEnded = event && new Date() > new Date(`${event.eventDate}T23:59:59.999+09:00`);
+  const [currentTime, setCurrentTime] = useState(() => Date.now());
+  const registrationNotOpen =
+    event && currentTime < new Date(`${event.registrationOpensAt}+09:00`).getTime();
+  const registrationClosed =
+    event && currentTime > new Date(`${event.registrationClosesAt}+09:00`).getTime();
+  const eventEnded =
+    event && currentTime > new Date(`${event.eventDate}T23:59:59.999+09:00`).getTime();
   const competitionDate = event
     ? new Date(`${event.eventDate}T00:00:00+09:00`).toLocaleDateString('en-GB', {
         day: 'numeric',
@@ -22,6 +27,11 @@ const Dashboard = () => {
         year: 'numeric',
       })
     : 'To Be Announced';
+
+  useEffect(() => {
+    const interval = window.setInterval(() => setCurrentTime(Date.now()), 60_000);
+    return () => window.clearInterval(interval);
+  }, []);
 
   return (
     <Fragment>
@@ -51,7 +61,7 @@ const Dashboard = () => {
           <span className={clsx(styles.registerLink, styles.registerClosed)}>
             Registration Closed
           </span>
-        ) : !event.registrationOpen ? (
+        ) : registrationClosed ? (
           <Link className={styles.registerLink} href="/apply">
             View Application
           </Link>

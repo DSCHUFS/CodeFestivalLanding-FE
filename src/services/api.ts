@@ -3,6 +3,7 @@ import {
   CodeFestivalApplication,
   CodeFestivalApplicationRequest,
   CodeFestivalApplicationStatus,
+  CodeFestivalCurrentEvent,
   CodeFestivalEvent,
   CodeFestivalEventList,
   CodeFestivalEventRequest,
@@ -119,6 +120,9 @@ export const endCodeFestivalSession = async () => {
 };
 
 export const getCurrentEvent = () => request<CodeFestivalEvent>('/v1/codefestival/events/current');
+
+export const getCurrentEventSummary = () =>
+  request<CodeFestivalCurrentEvent>('/v1/codefestival/events/current/summary');
 
 export const getCurrentMember = () =>
   request<CodeFestivalMember>('/v1/codefestival/me', undefined, true);

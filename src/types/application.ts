@@ -24,6 +24,11 @@ export type CodeFestivalEvent = {
   trackOptions: CodeFestivalOption[];
 };
 
+export type CodeFestivalCurrentEvent = Pick<
+  CodeFestivalEvent,
+  'edition' | 'title' | 'registrationOpensAt' | 'registrationClosesAt' | 'eventDate'
+>;
+
 export type CodeFestivalEventRequest = {
   edition: string;
   title: string;
