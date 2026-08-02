@@ -57,6 +57,7 @@ export type CodeFestivalMember = {
   name: string;
   email: string;
   department: string;
+  institutionalId: string | null;
   admin: boolean;
 };
 

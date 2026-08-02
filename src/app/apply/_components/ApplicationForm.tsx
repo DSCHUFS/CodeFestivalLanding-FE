@@ -77,7 +77,10 @@ const ApplicationForm = ({
               />
             </Field>
             <Field label="학번">
-              <StudentNumberInput value={application?.studentNumber} />
+              <StudentNumberInput
+                value={member.institutionalId ?? application?.studentNumber}
+                autoFilled={member.institutionalId !== null}
+              />
             </Field>
             <Field label="재학 상태" hint={getEnrollmentStatusNotice(event.eventDate)}>
               <Select
@@ -254,23 +257,30 @@ const formatPhoneNumber = (value: string) => {
   return `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7)}`;
 };
 
-type StudentNumberInputProps = { value?: string };
+type StudentNumberInputProps = {
+  value?: string;
+  autoFilled: boolean;
+};
 
-const StudentNumberInput = ({ value: initialValue }: StudentNumberInputProps) => {
+const StudentNumberInput = ({ value: initialValue, autoFilled }: StudentNumberInputProps) => {
   const [value, setValue] = useState(initialValue ?? '');
 
   return (
-    <input
-      className={clsx(styles.input, styles.requiredInput)}
-      name="studentNumber"
-      inputMode="numeric"
-      pattern="20[0-9]{7}"
-      placeholder="20XXXXXXX"
-      maxLength={9}
-      value={value}
-      onChange={event => setValue(event.currentTarget.value.replace(/\D/g, '').slice(0, 9))}
-      required
-    />
+    <>
+      <input
+        className={clsx(styles.input, !autoFilled && styles.requiredInput)}
+        name="studentNumber"
+        inputMode="numeric"
+        pattern="20[0-9]{7}"
+        placeholder="20XXXXXXX"
+        maxLength={9}
+        value={value}
+        onChange={event => setValue(event.currentTarget.value.replace(/\D/g, '').slice(0, 9))}
+        disabled={autoFilled}
+        required
+      />
+      {autoFilled && <input type="hidden" name="studentNumber" value={value} />}
+    </>
   );
 };
 
